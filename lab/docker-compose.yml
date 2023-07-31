@@ -1,0 +1,20 @@
+version: "3"
+services:
+  haproxy:
+    build:
+      context: ./haproxy
+      dockerfile: Dockerfile
+      args:
+        - haproxy_version=vuln
+        #- haproxy_version=patched
+    ports:
+      - "80:80"
+      - "443:443/tcp"
+      - "443:443/udp" # Open UDP for quic procol, fix ICMP error.
+    depends_on:
+      - backend-server
+  backend-server:
+    image: jmalloc/echo-server
+    ports:
+      - "8080:8080"
+
