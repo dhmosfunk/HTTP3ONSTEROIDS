@@ -14,7 +14,9 @@ services:
     depends_on:
       - backend-server
   backend-server:
-    image: jmalloc/echo-server
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
 

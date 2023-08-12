@@ -1,15 +1,13 @@
-FROM debian:latest
+FROM python:3.8-slim
 
-RUN apt update && apt upgrade && apt install -y \
-    socat \
-    bash
+WORKDIR /app
 
-RUN mkdir /www
-WORKDIR /www
+COPY . /app
 
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
+RUN pip install Flask
+
+ENV FLASK_APP=app.py
 
 EXPOSE 8080
 
-CMD ["./entrypoint.sh"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]

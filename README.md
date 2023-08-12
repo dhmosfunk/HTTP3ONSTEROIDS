@@ -160,9 +160,17 @@ Sending the following curl request:
 
 Vulnerable version response:
 ```
-HTTP/3 400 
-content-type: text/plain; charset=utf-8
+HTTP/3 200 
+server: Werkzeug/2.3.6 Python/3.8.17  
+date: Sat, 12 Aug 2023 13:10:52 GMT   
+content-type: text/html; charset=utf-8
+content-length: 76
 alt-svc: h3=":443";ma=900;
+
+Host: 192.168.1.104
+User-Agent: curl/8.1.2-DEV
+Accept: */*
+Foooooo\R\N: barr <-- Malformed header
 ```
 
 Patched version response:
