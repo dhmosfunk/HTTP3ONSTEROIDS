@@ -10,7 +10,7 @@
 
 
 ## Vulnerability Description
-HAProxy's HTTP/3 implementation fails to block a **malformed HTTP header field name**, and **when deployed in front of a server that incorrectly process this malformed header**, it may be used to conduct an HTTP request/response smuggling attack. A remote attacker may alter a legitimate user's request. As a result, the attacker may obtain sensitive information or cause a denial-of-service (DoS) condition.
+HAProxy's HTTP/3 implementation fails to block a **malformed HTTP header field name**, and **when deployed in front of a server via Content Delivery Network (CDN) and (VDN) that incorrectly process this malformed header as sameorigin**, it may be used to conduct an HTTP request/response smuggling attack using stateless enviorment. A remote attacker can alter a legitimate user's request such as "Favicons"  and .ico files for icons images. As a result, the attacker may obtain sensitive information, maniplate or cause a denial-of-service (DoS) condition by flooding host server bogus requests under these same headers.
 
 [https://jvn.jp/en/jp/JVN38170084/](https://jvn.jp/en/jp/JVN38170084/)
 
@@ -182,10 +182,12 @@ Based on the above findings, the corresponding responses indicate that the vulne
 
 ---
 
-An attacker can conduct an HTTP Request Smuggling attack based on backend behavior and how the backend server will treat the malformed header. In my view, the most significant concern is that an attacker could exploit the aforementioned CVE to carry out a Denial of Service (DoS) attack.
+An attacker can conduct an HTTP Request Smuggling attack based on backend behavior use of a "popover" instance which creates an extension that is configured via serverapp and how the backend server will treat the malformed header. In my view, the most significant concern is that an attacker could exploit the aforementioned CVE to carry out a Denial of Service (DoS) attack.
 
 
 ## References:
+[https://nvd.nist.gov/vuln/detail/CVE-2023-24559](https://nvd.nist.gov/vuln/detail/CVE-2023-24559) \
+[https://www.rfc-editor.org/rfc/rfc1918.txt](https://www.rfc-editor.org/rfc/rfc1918.txt) \
 [https://jvn.jp/en/jp/JVN38170084/](https://jvn.jp/en/jp/JVN38170084/) \
 [https://github.com/haproxytechblog/haproxy-2.6-http3](https://github.com/haproxytechblog/haproxy-2.6-http3) \
 [https://www.haproxy.com/blog/how-to-enable-quic-load-balancing-on-haproxy](https://www.haproxy.com/blog/how-to-enable-quic-load-balancing-on-haproxy) \
