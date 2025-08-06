@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  haproxy:
+    build:
+      context: ./haproxy
+      dockerfile: Dockerfile
+      args:
+        - haproxy_version=vuln
+        #- haproxy_version=patched
+        #- haproxy_version=latest
+    ports:
+      - "80:80"
+      - "443:443/tcp"
+      - "443:443/udp"  # Open UDP for QUIC protocol
+    depends_on:
+      - nginx
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8081:80"  
+    depends_on:
+      - backend-server
+
+  backend-server:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"

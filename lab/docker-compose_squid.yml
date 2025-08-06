@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  haproxy:
+    build:
+      context: ./haproxy
+      dockerfile: Dockerfile
+      args:
+        - haproxy_version=vuln
+        #- haproxy_version=patched
+        #- haproxy_version=latest
+    ports:
+      - "80:80"
+      - "443:443/tcp"
+      - "443:443/udp"  # Open UDP for QUIC protocol
+    depends_on:
+      - squid
+
+  squid:
+    image: sameersbn/squid:latest
+    volumes:
+      - ./squid/squid.conf:/etc/squid/squid.conf:ro
+    ports:
+      - "8081:3128"
+    depends_on:
+      - backend-server
+
+  backend-server:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"

@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   haproxy:
     build:
@@ -7,16 +8,25 @@ services:
       args:
         - haproxy_version=vuln
         #- haproxy_version=patched
+        #- haproxy_version=latest
     ports:
       - "80:80"
       - "443:443/tcp"
-      - "443:443/udp" # Open UDP for quic procol, fix ICMP error.
+      - "443:443/udp"  # Open UDP for QUIC protocol
+    depends_on:
+      - apache
+  apache:
+    image: httpd:latest
+    volumes:
+      - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+    ports:
+      - "8082:80"
     depends_on:
       - backend-server
+
   backend-server:
     build: 
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-

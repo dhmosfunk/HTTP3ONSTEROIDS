@@ -35,7 +35,10 @@ RUN if [ "$haproxy_version" = "vuln" ]; then \
         wget https://www.haproxy.org/download/2.7/src/haproxy-2.7.0.tar.gz; \ 
     elif [ "$haproxy_version" = "patched" ]; then \
         # Patched version
-        wget https://www.haproxy.org/download/2.8/src/haproxy-2.8.1.tar.gz; \
+        wget https://www.haproxy.org/download/2.9/src/haproxy-2.9.15.tar.gz; \
+    elif [ "$haproxy_version" = "latest" ]; then \
+        # Latest version
+        wget https://www.haproxy.org/download/3.2/src/haproxy-3.2.3.tar.gz; \
     else \
         # Invalid version
         echo "Invalid HAProxy version specified"; \
@@ -73,4 +76,4 @@ COPY conf/certs/. /etc/haproxy/certs/.
 
 EXPOSE 80 443
 
-CMD ["haproxy", "-f", "/etc/haproxy/haproxy.cfg"] 
+CMD ["haproxy", "-dd", "-f", "/etc/haproxy/haproxy.cfg"] 
